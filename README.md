@@ -13,7 +13,7 @@ customize it to suit your needs :)
 - [jq](https://formulae.brew.sh/formula/jq)
 
 **Step-by-Step**
-1. `wget -o ~/.zsh-banner.sh https://raw.githubusercontent.com/andrew-manger/zsh-banner/refs/heads/main/zsh-banner.sh`
+1. `curl -o ~/.zsh-banner.sh https://raw.githubusercontent.com/andrew-manger/zsh-banner/refs/heads/main/zsh-banner.sh`
 2. `chmod +x .zsh-banner.sh`
 3. `echo "source ~/.zsh-banner.sh" >> ~/.zshrc`
 
