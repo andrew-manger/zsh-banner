@@ -9,7 +9,7 @@ BOLD_BLUE='\033[1;35m'
 BOLD_RED='\033[1;31m'
 
 # ASCII Art based on the hostname (requires figlet installation)
-hostname_art=$(echo $HOST | figlet)
+hostname_art=$(echo "Q-amanger" | figlet)
 
 # OS Details
 os_name=$(uname)
@@ -38,7 +38,7 @@ function check_vpn {
     local wireguard_count=$(netstat -nr | grep -c 'utun9')
 
     if [[ "$qualtrics_count" -ne 0 ]]; then
-        echo ${BOLD_GREEN}"Connected${BOLD_BLUE} (Work)"${NC}
+        echo ${BOLD_GREEN}"Connected${BOLD_BLUE} (Qualtrics)"${NC}
     elif [[ "$wireguard_count" -ne 0 ]]; then
         echo ${BOLD_GREEN}"Connected${BOLD_RED} (Wireguard)"${NC}
     else
@@ -50,21 +50,22 @@ function check_vpn {
 vpn_status=$(check_vpn)
 
 # Uptime
-function formatted_uptime {
+function format_uptime {
     local up=$(uptime)
-    local days=$(echo $up | grep -o '[0-9]\+ day' | grep -o '[0-9]\+')
-    local hrs=$(echo $up | grep -o '[0-9]\+:[0-9]\+' | cut -d: -f1)
-    local mins=$(echo $up | grep -o '[0-9]\+:[0-9]\+' | cut -d: -f2)
+    local days=$(echo "$up" | grep -o '[0-9]\+ day' | awk 'END {print $1}')
+    local hrs=$(echo "$up" | grep -o '[0-9]\+:[0-9]\+' | awk 'END {print $1}' | cut -d: -f1)
+    local mins=$(echo "$up" | grep -o '[0-9]\+:[0-9]\+' | awk 'END {print $1}' | cut -d: -f1)
 
     local formatted_uptime=""
+    
     if [[ -n $days ]]; then
         formatted_uptime+="$days days, "
     fi
 
-    formatted_uptime+="$hrs hours, $mins minutes"
+    formatted_uptime+="$hrs hrs, $mins mins"
     echo $formatted_uptime
 }
-uptime=$(formatted_uptime)
+uptime=$(format_uptime)
 
 # IP Address Finding
 lan_ip=$(ipconfig getifaddr en0) # Assumes en0 is your primary interface, adjust if necessary
